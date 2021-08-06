@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "freeimage.h": "c",
+        "stdio.h": "c"
+    }
+}

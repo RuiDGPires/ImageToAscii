@@ -8,7 +8,7 @@
 #define NCHARS 23
 #define MAX_FILENAME 200
 
-const char table[NCHARS] = {'.', '-', ',', ':', ';', '+', '|', ')', 'c', '7', 'x', 'f', 'F', 'X', '%', '4', 'O', '8', 'B', 'N', 'M', '@', '#'};
+const char table[NCHARS] = {'.', '-', ',', ':', ';', '+', '|', ')', 'c', '7', 'x', 'F', 'f', 'X', '%', '4', 'O', '8', 'B', 'N', 'M', '@', '#'};
 
 float out_scale = OUTPUT_SCALE;
 

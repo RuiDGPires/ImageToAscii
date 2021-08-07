@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define OUTPUT_SCALE 0.1
-#define CONTRAST_MUL 325
+#define CONTRAST_MUL 500
 #define NCHARS 23
 #define MAX_FILENAME 200
 
@@ -29,13 +29,13 @@ char *doStuff(FIBITMAP *bm){
     FreeImage_SetTransparent(bm, FALSE);
     *bm = *FreeImage_ConvertTo24Bits(bm);
     
-    if (!FreeImage_AdjustContrast(bm, CONTRAST_MUL)) throwError("Adjust Contrast Failed");
+    if (!FreeImage_AdjustContrast(bm, CONTRAST_MUL / (out_scale < 1 ? out_scale: 1))) throwError("Adjust Contrast Failed");
     *bm = *FreeImage_ConvertToGreyscale(bm);
     *bm = *FreeImage_Rescale(bm, out_width, out_height, FILTER_BILINEAR);
 
     char *buffer;
-    unsigned buffer_size = sizeof(char)*(out_width + 1)*out_height + 1;
-    unsigned write_index = buffer_size - out_width - 2;
+    unsigned buffer_size = sizeof(char)*(2*out_width + 1)*out_height + 1;
+    unsigned write_index = buffer_size - 2*out_width - 2;
 
     if ((buffer = malloc(buffer_size)) == NULL) throwError("Error allocating memory");
 
@@ -48,10 +48,11 @@ char *doStuff(FIBITMAP *bm){
         BYTE *bits = FreeImage_GetScanLine(bm, y);
         for (unsigned x = 0; x < out_width; ++x){
             buffer[write_index++] = ColorToChar(bits[FI_RGBA_RED]);
+            buffer[write_index++] = ' ';
             bits += bytespp;
         }
         buffer[write_index++] = '\n';
-        write_index -= 2*(out_width + 1);
+        write_index -= 2*(2*out_width + 1);
     }
 
     return buffer;

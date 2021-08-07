@@ -5,10 +5,10 @@
 
 #define OUTPUT_SCALE 0.1
 #define CONTRAST_MUL 600
-#define NCHARS 18
+#define NCHARS 23
 #define MAX_FILENAME 200
 
-const char table[NCHARS] = {'.', ',', '-', ':', ';', ')', '+', 'c', 'x', '7', 'O', 'X', '8', '%', 'N', 'M', '@', '#'};
+const char table[NCHARS] = {'.', '-', ',', '+', ':', ';', '|', ')', 'c', '7', 'x', 'f', 'F', 'X', '%', '4', 'O', '8', 'B', 'N', 'M', '@', '#'};
 
 float out_scale = OUTPUT_SCALE;
 

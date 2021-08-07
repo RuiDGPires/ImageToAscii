@@ -5,10 +5,12 @@
 
 #define OUTPUT_SCALE 0.1
 #define CONTRAST_MUL 900000
-#define NCHARS 15
+#define NCHARS 18
 #define MAX_FILENAME 200
 
-const char table[NCHARS] = {'.', '-', ':', ';', ')', '+', 'x', '7', 'O', '8', '%', '@', 'N', 'M','#'};
+const char table[NCHARS] = {'.', ',', '-', ':', ';', ')', 'c', '+', 'x', 'X', '7', 'O', '8', '%', '@', 'N', 'M','#'};
+
+float out_scale = OUTPUT_SCALE;
 
 char ColorToChar(int val){
     val = 255 - val;
@@ -23,7 +25,7 @@ void throwError(char message[]){
 }
 
 char *doStuff(FIBITMAP *bm){
-    int out_width = FreeImage_GetWidth(bm)*OUTPUT_SCALE, out_height = FreeImage_GetHeight(bm)*OUTPUT_SCALE;
+    int out_width = FreeImage_GetWidth(bm)*out_scale, out_height = FreeImage_GetHeight(bm)*out_scale;
     FreeImage_SetTransparent(bm, FALSE);
     *bm = *FreeImage_ConvertTo24Bits(bm);
     
@@ -62,7 +64,7 @@ FIBITMAP *loadImage(const char filename[]){
         fif = FreeImage_GetFIFFromFilename(filename);
     }
     if (fif == FIF_UNKNOWN || !FreeImage_FIFSupportsReading(fif)) return NULL;
-    
+
     return FreeImage_Load(fif, filename, BMP_DEFAULT);
 }
 
@@ -70,13 +72,17 @@ int main(int argc, char *argv[]){
     FreeImage_Initialise(TRUE);
     printf("Image to Ascii\nMade using FreeImage %s\n", FreeImage_GetVersion());
     
-    if (argc != 2) throwError("Wrong number of command line arguments:\nAtoI <filename>");    
+    if (argc != 2 && argc != 3) throwError("Wrong number of command line arguments:\nAtoI <filename> [output_scale]");    
+
+    if (argc == 3) out_scale = atof(argv[2]);
 
     FIBITMAP *bitmap = loadImage(argv[1]);
 
     if (bitmap) {
         char *buffer = doStuff(bitmap);
-        if (!FreeImage_Save(FIF_JPEG, bitmap, "sample-output.jpeg", PNG_DEFAULT)) throwError("Error Saving Image");
+#ifdef DEBUG
+        if (!FreeImage_Save(FIF_JPEG, bitmap, "sample-output.jpeg", JPEG_DEFAULT)) throwError("Error Saving Image");
+#endif
         FreeImage_Unload(bitmap);
 
         printf("%s\n", buffer);

@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define OUTPUT_SCALE 0.1
-#define CONTRAST_MUL 600
+#define CONTRAST_MUL 325
 #define NCHARS 23
 #define MAX_FILENAME 200
 

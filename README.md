@@ -1,6 +1,5 @@
 # Image To Ascii
 
-Simple image to ascii program written in C.
 
 ## Example
 
